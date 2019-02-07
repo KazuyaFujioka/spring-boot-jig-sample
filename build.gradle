@@ -1,0 +1,88 @@
+buildscript {
+    ext {
+        compatibility = JavaVersion.VERSION_11
+        encoding = 'UTF-8'
+
+        jigVersion = '2019.2.1'
+
+        springBootVersion = '2.1.2.RELEASE'
+        mybatisSpringBootVersion = '2.0.0'
+        mybatisTypehandlersVersion = '1.0.2'
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.org.dddjava.jig:jig-gradle-plugin:${jigVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.dddjava.jig-gradle-plugin'
+
+jigReports.dependsOn(compileJava, processResources)
+
+sourceCompatibility = compatibility
+targetCompatibility = compatibility
+
+description 'Spring Boot Jig Sample'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    version = '0.1.0'
+}
+
+sourceSets {
+    main {
+        // mybatis SQL map XML ファイルを java 以下でも検知する
+        resources.srcDirs = ['src/main/java', 'src/main/resources']
+    }
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Object-relational mapping
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}")
+    implementation("org.mybatis:mybatis-typehandlers-jsr310:${mybatisTypehandlersVersion}")
+
+    runtimeOnly("mysql:mysql-connector-java")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group: 'junit')
+    }
+
+    testImplementation platform("org.junit:junit-bom:5.3.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeClasspath("org.junit.platform:junit-platform-launcher")
+    testRuntimeClasspath("org.junit.jupiter:junit-jupiter-engine")
+}
+
+jig {
+    documentTypes = [
+            'ServiceMethodCallHierarchyDiagram',
+            'PackageRelationDiagram',
+            'BusinessRuleRelationDiagram',
+            'ApplicationList',
+            'BusinessRuleList',
+            'BranchList',
+            'CategoryUsageDiagram',
+            'CategoryDiagram',
+            'BooleanServiceDiagram',
+            'PackageTreeDiagram']
+}
