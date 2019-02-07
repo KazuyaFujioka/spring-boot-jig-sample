@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.infrastructure.datasource.attraction.AttractionMapper">
+
+    <insert id="register">
+        INNER INTO ASOVIEW.PL_M (
+          PL_NM
+        )
+        VALUE
+        (
+          #{attraction.situation}
+        )
+    </insert>
+
+    <resultMap id="attraction" type="com.example.domain.model.attraction.Attraction">
+        <result property="situation" column="situation"/>
+    </resultMap>
+
+    <select id="findBy" resultMap="attraction">
+        SELECT
+          '運営' AS situation
+        FROM
+          ASOVIEW.PL_M
+        WHERE
+          PL_CD = #{attractionCode.value}
+    </select>
+
+</mapper>
