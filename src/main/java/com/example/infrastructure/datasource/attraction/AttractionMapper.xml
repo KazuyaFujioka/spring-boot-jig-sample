@@ -3,8 +3,8 @@
 <mapper namespace="com.example.infrastructure.datasource.attraction.AttractionMapper">
 
     <insert id="register">
-        INNER INTO ASOVIEW.PL_M (
-          PL_NM
+        INSERT INTO example.attraction (
+          attraction_code
         )
         VALUE
         (

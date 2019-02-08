@@ -60,7 +60,9 @@ dependencies {
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}")
     implementation("org.mybatis:mybatis-typehandlers-jsr310:${mybatisTypehandlersVersion}")
 
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.flywaydb:flyway-core")
+
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group: 'junit')
